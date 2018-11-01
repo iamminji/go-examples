@@ -29,8 +29,7 @@ token을 literal (string) 로 주면 __character token too long__ 이 뜬다. �
 
 single quote(') 로 감싸면 당연하게도 __invalid token__ 에러가 뜨고, 어떠한 quote도 주지 않으면 __syntax error__ 가 뜬다. 
 
-결과적으로 literal token 을 주고 싶으면 조합해서 사용하면 된다. __3 -->__ 를 입력하면 두배를 곱한 결과값 6이 나오는 정의이다.
-해당 파일에서는 다음과 같이 입력하였다.
+결과적으로 literal token 을 주고 싶으면 조합해서 사용하면 된다. 아래의 yacc는 __3 -->__ 를 입력하면 두배를 곱한 결과값 6이 나오는 정의이다.
 
 <pre><code>|   expr '-' '-' '>'
     { $$ = $1 *  }

@@ -80,7 +80,7 @@ expr	:    '(' expr ')'
 	|    LETTER
 		{ $$  = regs[$1] }
 	|   expr '-' '-' '>'
-	    { $$ = $1 *  }
+	    { $$ = $1 * 2 }
 	|    number
 	;
 

@@ -32,7 +32,7 @@ single quote(') 로 감싸면 당연하게도 __invalid token__ 에러가 뜨고
 결과적으로 literal token 을 주고 싶으면 조합해서 사용하면 된다. 아래의 yacc는 __3 -->__ 를 입력하면 두배를 곱한 결과값 6이 나오는 정의이다.
 
 <pre><code>|   expr '-' '-' '>'
-    { $$ = $1 *  }
+    { $$ = $1 * 2 }
 </code></pre>
 
 

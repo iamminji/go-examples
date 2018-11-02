@@ -1,26 +1,18 @@
-```$xslt
-// Copyright 2014 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+GOYACC
+==
 
-// This file holds the go generate command to run yacc on the grammar in expr.y.
-// To build expr:
-//	% go generate
-//	% go build
+사전에 <code>goyacc</code>를 설치해주자. 기존엔 tools 에 있었는데 1.8 부터 제외되었다고 한다.
+<pre><code>go get golang.org/x/tools/cmd/goyacc
+</code></pre>
+깔려져 있는 곳의 경로를 $PATH 로 지정하면 끝!
 
-//go:generate goyacc -o goyacc_example.go -p "Calc" goyacc_example.y
-
-// Expr is a simple expression evaluator that serves as a working example of
-// how to use Go's yacc implementation.
-package main
+## Run
+```
+goyacc -o goyacc_calc_example.go -p "Calc" goyacc_calc_example.y
+goyacc -o goyacc_nested_map_example.go -p "yy" goyacc_nested_map_example.y
 ```
 
-
-Run
-```
-goyacc -o goyacc_example.go -p "Calc" goyacc_example.y
-```
-
+## 정리
 <code>Calc</code> 대신에 다른 변수를 넣으면 해당 변수를 prefix 로 갖는 변수명들이 쭉 생성된다.
 즉 현재 코드 <code>goyacc_example.go</code> 에 있는 <code>Calc</code> 대신에 지정한 변수가 들어가게 된다.
   
@@ -42,8 +34,16 @@ single quote(') 로 감싸면 당연하게도 __invalid token__ 에러가 뜨고
 6
 </code></pre>
 
+두 번째 예제인 <code>goyacc_nested_map_example.y</code> 의 경우엔 입력 값이
+<code>{key1 = value1 | key2 = {key3 = value3} | key4 = {key5 = { key6 = value6 }}}</code> 이와 같이 들어왔을 때 
+결과 값으로 올바른 맵의 형태로 내뱉어 주고 있다.
+
+<pre><code>map[key2:map[key3:value3] key4:map[key5:map[key6:value6]] key1:value1]
+</code></pre>
+
 goyacc 명령어 없이 직접 파일을 수정할 수도 있는데, 그럴 경우 최상단의 __DO NOT EDIT__ 을 지워주고 하자.
 
 ##### Ref Links
 - [https://godoc.org/golang.org/x/tools/cmd/goyacc](https://godoc.org/golang.org/x/tools/cmd/goyacc)
 - [https://github.com/golang-samples/yacc](https://github.com/golang-samples/yacc)
+- [https://stackoverflow.com/a/8434418/4547125](https://stackoverflow.com/a/8434418/4547125)

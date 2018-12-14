@@ -10,42 +10,64 @@ import (
 
 // 구조체에 해당 구조체에 채널과 waitGroup 필드 생성
 type MyStruct struct {
-	stop chan bool
-	wait *sync.WaitGroup
+	stop1 chan bool
+	stop2 chan bool
+	wait  *sync.WaitGroup
 }
 
 func NewMyStruct() *MyStruct {
 	m := &MyStruct{}
-	m.stop = make(chan bool)
+	m.stop1 = make(chan bool)
+	m.stop2 = make(chan bool)
 	m.wait = &sync.WaitGroup{}
 	return m
 }
 
 // 무한 루프 돌면서 채널 확인
-func (m *MyStruct) test() {
+func (m *MyStruct) test1() {
 
 	defer m.wait.Done()
 
 	for {
 		select {
-		case <-m.stop:
-			fmt.Println("Stop Test")
-			// return 혹은 break 시에는 for 루프에 라벨을 붙여서 break 해야 한다.
+		case <-m.stop1:
+			fmt.Println("Stop Test 1")
 			return
 		case <-time.After(2 * time.Second):
-			fmt.Println("sleep 2 Seconds")
+			fmt.Println("TEST 1 sleep 2 Seconds")
 		}
 	}
+}
+
+// 두번째 방법
+func (m *MyStruct) test2() {
+
+EXIT:
+	for {
+		select {
+		case <-m.stop2:
+			fmt.Println("Stop Test 2")
+			break EXIT
+		case <-time.After(3 * time.Second):
+			fmt.Println("TEST 2 sleep 3 Seconds")
+		}
+	}
+
+	m.wait.Done()
 }
 
 func main() {
 
 	myStruct := NewMyStruct()
-	myStruct.wait.Add(1)
-	go myStruct.test()
 
-	// 종료 시 아래 주석 참고
-	// myStruct.stop <- true
+	myStruct.wait.Add(2)
+
+	go myStruct.test1()
+	go myStruct.test2()
+
+	time.Sleep(3 * time.Second)
+	// test1 만 종료
+	myStruct.stop1 <- true
 
 	defer myStruct.wait.Wait()
 }

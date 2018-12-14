@@ -29,6 +29,8 @@ goal:
         yylex.(*lex).m = $2
     }
 
+stmt:
+
 pairs:
     pair
     {

@@ -2,7 +2,7 @@
 
 //line goyacc_calc_example.y:8
 
-package main
+package lex_yacc
 
 import __yyfmt__ "fmt"
 
